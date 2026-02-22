@@ -24,6 +24,7 @@ DEFINE_GLOBAL(u32, processed_output_676250, 0x676250);
 DEFINE_GLOBAL(s32, modelPhyArrLen_675F90, 0x675F90);
 DEFINE_GLOBAL(u8*, modelPhyArrPtr_675F98, 0x675F98);
 DEFINE_GLOBAL_INIT(Fix16, dword_677F54, Fix16(1), 0x677F54);
+DEFINE_GLOBAL_INIT(Fix16, dword_677D78, Fix16(1), 0x677D78);
 DEFINE_GLOBAL_INIT(Fix16, dword_677D74, Fix16(0x666, 0), 0x677D74);
 DEFINE_GLOBAL_INIT(Fix16, DAT_6761A4, Fix16(0), 0x6761a4);
 DEFINE_GLOBAL_ARRAY(char, Buffer_675FD4, 80, 0x675FD4);
@@ -547,11 +548,42 @@ CarInfo_2C::~CarInfo_2C()
 {
 }
 
-STUB_FUNC(0x454410)
-EXPORT Fix16 __stdcall ComputeCarMassAndInertia_454410(Fix16 width, Fix16 height, Fix16 mass, Fix16 front_mass_bias, s32* pOut2)
+WIP_FUNC(0x454410)
+EXPORT Fix16 __stdcall ComputeCarMassAndInertia_454410(
+    Fix16 width,
+    Fix16 height,
+    Fix16 mass,
+    Fix16 frontMassBias,
+    Fix16* outCgHeight)
 {
-    NOT_IMPLEMENTED;
-    return Fix16(10);
+    WIP_IMPLEMENTED;
+
+    // Precompute squared dimensions
+    Fix16 Ixx = (width * width + height * height * dword_677D78) / Fix16(12);
+
+    // Mass distribution
+    Fix16 frontMass = mass * frontMassBias;
+    Fix16 rearMass  = mass * (dword_677F54 - frontMassBias);
+
+    // Moments
+    Fix16 frontI = frontMass * Ixx;
+    Fix16 rearI  = rearMass  * Ixx;
+
+    // CG height offset
+    Fix16 cgHeight = (height * rearMass + height * frontMass) / mass;
+
+    *outCgHeight = cgHeight;
+
+    // Compute deltas
+    Fix16 frontDelta = cgHeight - height;
+    Fix16 rearDelta  = cgHeight - height;
+
+    // Combine inertia contributions
+    Fix16 inertia =
+        frontI + (frontMass * frontDelta * frontDelta) +
+        rearI  + (rearMass  * rearDelta  * rearDelta);
+
+    return inertia;
 }
 
 WIP_FUNC(0x5618F0)
@@ -609,15 +641,15 @@ void CarInfo_2C::CalculateCarInfo_4542A0(s32 idx)
         new_rear_wheel_offset = -dword_6F6850.list[-rear_wheel_offset];
     }
     this->field_8_rear_wheel_offset = new_rear_wheel_offset;
+    Fix16 outY;
     Fix16 new_field_0 = ComputeCarMassAndInertia_454410(dword_6F6850.list[pCarInfo->w],
                                                         dword_6F6850.list[pCarInfo->h],
                                                         pModelPhysics->field_4_mass,
                                                         pModelPhysics->field_C_front_mass_bias,
-                                                        &idx);
-    s32 idx__ = idx;
+                                                        &outY);
     this->field_0_moment_of_inertia = new_field_0;
     this->field_C_center_of_mass_offset.x = 0;
-    this->field_C_center_of_mass_offset.y = idx__; // out val of func above
+    this->field_C_center_of_mass_offset.y = outY; // out val of func above
     this->field_14_half_thrust = pModelPhysics->field_24_thrust / 2;
     Fix16 fith_thrust = pModelPhysics->field_24_thrust / 5;
     field_14_half_thrust = this->field_14_half_thrust;
@@ -688,12 +720,9 @@ CarInfo_2C* CarInfo_808::GetInfoAtIdx_454840(u8 idx)
     return field_0_ptr_array[idx];
 }
 
-// This function has a full match, but it's waiting until CalculateCarInfo_4542A0 has matched.
-// Or moved to a different file. While it's empty, this match will fail because of a single intruction
-STUB_FUNC(0x454850)
+MATCH_FUNC(0x454850)
 void CarInfo_808::CalculateAllCarInfo_454850()
 {
-    NOT_IMPLEMENTED;
     const u32 count = gGtx_0x106C_703DD4->get_number_of_cars();
     field_400_raw_data = new CarInfo_2C[count];
 
