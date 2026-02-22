@@ -2182,20 +2182,20 @@ Fix16 CarPhysics_B0::ComputeEngineTorque_561970()
                         if (vel_len <= dword_6FE258->field_40_gear2_speed)
                         {
                             // Gear 1
-                            return ((dword_6FE0E4->field_14_half_thrust + ComputeTorqueUnknown_49E8E0()) *
+                            return ((ComputeTorqueUnknown_49E8E0()) *
                                     dword_6FE258->field_34_gear1_multiplier);
                         }
                         else
                         {
                             // Gear 2
-                            return ((dword_6FE0E4->field_14_half_thrust + inline_ComputeTorqueFromThrottle_561DD0()) *
+                            return ((inline_ComputeTorqueFromThrottle_561DD0()) *
                                     dword_6FE258->field_38_gear2_multiplier);
                         }
                     }
                     else
                     {
                         // Gear 3
-                        return ((dword_6FE0E4->field_14_half_thrust + inline_ComputeTorqueFromThrottle_561DD0()) *
+                        return ((inline_ComputeTorqueFromThrottle_561DD0()) *
                                 dword_6FE258->field_3C_gear3_multiplier);
                     }
                 }
