@@ -2152,6 +2152,7 @@ bool CarPhysics_B0::get_revs_561940()
     return dword_6FE258->field_1_turbo && this->field_60_gas_pedal >= k_dword_6FE1B8;
 }
 
+// https://decomp.me/scratch/0MzjM
 // 9.6f 0x4A0F30
 WIP_FUNC(0x561970)
 Fix16 CarPhysics_B0::ComputeEngineTorque_561970()
