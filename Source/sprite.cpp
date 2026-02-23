@@ -262,36 +262,32 @@ bool Sprite::ShrinkSprite_59E390(Fix16 xoff, Fix16 yoff, s32 bUnknown)
 
     Update_4C_59F990();
 
-    Sprite_4C* p4C_ = this->field_4_0x4C_len;
-    Fix16 s_w = p4C_->field_0_width;
-    Fix16 s_h = p4C_->field_4_height;
-    Fix16 s_w_ = p4C_->field_0_width;
-    Fix16 wd = p4C_->field_0_width - xoff;
-    p4C_->field_0_width = wd;
+    Fix16 s_w = field_4_0x4C_len->field_0_width;
+    Fix16 s_h = field_4_0x4C_len->field_4_height;
 
-    if (wd <= gFix16_7035C0)
+    field_4_0x4C_len->field_0_width -= xoff;
+    if (field_4_0x4C_len->field_0_width <= gFix16_7035C0)
     {
-        p4C_->field_0_width = gFix16_7035C0;
+        field_4_0x4C_len->field_0_width = gFix16_7035C0;
     }
 
-    p4C_->field_48_bBoxUpToDate = 0;
+    field_4_0x4C_len->field_48_bBoxUpToDate = 0;
 
-    bool bWEq = p4C_->field_0_width == gFix16_7035C0;
-    Sprite_4C* p4C__ = this->field_4_0x4C_len;
-    Fix16 hd = p4C__->field_4_height - yoff;
-    p4C__->field_4_height = hd;
-    if (hd <= gFix16_7035C0)
+    bool bWEq = field_4_0x4C_len->field_0_width == gFix16_7035C0;
+
+    field_4_0x4C_len->field_4_height -= yoff;
+    if (field_4_0x4C_len->field_4_height <= gFix16_7035C0)
     {
-        p4C__->field_4_height = gFix16_7035C0;
+        field_4_0x4C_len->field_4_height = gFix16_7035C0;
     }
-    Fix16 s_h_ = p4C__->field_4_height;
-    p4C__->field_48_bBoxUpToDate = 0;
+
+    Fix16 s_h_ = field_4_0x4C_len->field_4_height;
+    field_4_0x4C_len->field_48_bBoxUpToDate = 0;
 
     bool ret = s_h_ == gFix16_7035C0 || bWEq;
 
     if (bUnknown == 1)
     {
-        Sprite_4C* p4C = this->field_C_sprite_4c_ptr;
         Sprite_4C* p4C___ = this->field_4_0x4C_len;
         Fix16 s_h__ = p4C___->field_4_height;
 
@@ -303,7 +299,7 @@ bool Sprite::ShrinkSprite_59E390(Fix16 xoff, Fix16 yoff, s32 bUnknown)
         }
         else
         {
-            new_w = ((p4C___->field_0_width * p4C->field_0_width) / s_w_);
+            new_w = ((p4C___->field_0_width * field_C_sprite_4c_ptr->field_0_width) / s_w);
         }
 
         if (s_h == gFix16_7035C0)
@@ -312,17 +308,11 @@ bool Sprite::ShrinkSprite_59E390(Fix16 xoff, Fix16 yoff, s32 bUnknown)
         }
         else
         {
-            new_h = ((s_h__ * p4C->field_4_height) / s_h);
+            new_h = ((s_h__ * field_C_sprite_4c_ptr->field_4_height) / s_h);
             ret = s_h_ == gFix16_7035C0 || bWEq;
         }
 
-        if (new_w != p4C->field_0_width || new_h != p4C->field_4_height)
-        {
-            p4C->field_0_width = new_w;
-            p4C->field_4_height = new_h;
-            p4C->field_48_bBoxUpToDate = 0;
-        }
-
+        field_C_sprite_4c_ptr->set_wh_4BA030(new_w, new_h);
     }
     return ret;
 }
