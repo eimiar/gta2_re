@@ -1238,7 +1238,7 @@ void Char_B4::UpdateAnimState_546360()
             goto LABEL_277;
 
         case Char_Anim_state::Normal_Fall_11:
-        case Char_Anim_state::Letal_Fall_12:
+        case Char_Anim_state::Lethal_Fall_12:
             field_71 = 1;
             switch (field_68_animation_frame)
             {
@@ -1264,7 +1264,7 @@ void Char_B4::UpdateAnimState_546360()
                 case 0xEu:
                 case 0xFu:
                 case 0x10u:
-                    field_6C_animation_state = Char_Anim_state::Letal_Fall_12;
+                    field_6C_animation_state = Char_Anim_state::Lethal_Fall_12;
                     newId_ = field_68_animation_frame + baseId + 81;
                     break;
                 default:
@@ -1304,7 +1304,7 @@ void Char_B4::UpdateAnimState_546360()
                             break;
 
                         case 1:
-                            field_6C_animation_state = 13;
+                            field_6C_animation_state = Char_Anim_state::Unknown_13;
                             break;
                     }
                     field_68_animation_frame = 7;
@@ -1324,7 +1324,7 @@ void Char_B4::UpdateAnimState_546360()
                     switch (rng_val_)
                     {
                         case 0:
-                            field_6C_animation_state = 14;
+                            field_6C_animation_state = Char_Anim_state::Unknown_14;
                             break;
 
                         case 1:
@@ -2969,11 +2969,11 @@ void Char_B4::state_1_5504F0()
     v73 = v20;
     if (field_10_char_state != 10)
     {
-        if (field_10_char_state == 15)
+        if (field_10_char_state == Char_B4_state::Jumping_15)
         {
-            if (field_6C_animation_state != 5)
+            if (field_6C_animation_state != Char_Anim_state::Jumping_5)
             {
-                field_6C_animation_state = 5;
+                field_6C_animation_state = Char_Anim_state::Jumping_5;
                 field_68_animation_frame = 0;
                 field_71 = 4;
             }
@@ -3878,7 +3878,7 @@ void Char_B4::state_8_5520A0()
                     field_8_ped_state_1 = field_7C_pPed->GetPedState_403990();
                     field_C_ped_state_2 = field_7C_pPed->GetPedState2_433B60();
                     NearestSpriteOfType_477E60 = gPurpleDoom_1_679208->FindNearestSpriteOfType_477E60(field_80_sprite_ptr, 0);
-                    if (field_6C_animation_state == 12)
+                    if (field_6C_animation_state == Char_Anim_state::Lethal_Fall_12)
                     {
                         if (field_7C_pPed->field_21C_bf.b24 == false) //if ((v41 & 0x1000000) == 0)
                         {
