@@ -17,7 +17,7 @@ enum
 
 struct UnknownList
 {
-    Fix16 sub_41FE70(s8& var)
+    Fix16 sub_41FE70(s8 var)
     {
         if (var < 0)
         {
@@ -26,7 +26,7 @@ struct UnknownList
         return list[var];
     }
 
-    EXPORT Fix16 sub_440860(s8& var);
+    EXPORT Fix16 sub_440860(s8 var);
 
     Fix16 list[256];
 };
