@@ -553,30 +553,19 @@ EXPORT Fix16 __stdcall ComputeCarMassAndInertia_454410(Fix16 width, Fix16 height
 {
     WIP_IMPLEMENTED;
 
-    // Precompute squared dimensions
-    Fix16 Ixx = (width * width + height * height * dword_677D78) / Fix16(12);
+    Fix16 inertiaBase = ((((height * height) * dword_677D78) + (width * width)) / 12);
+    Fix16 heightXConstant = (height * dword_677D78);
+    Fix16 frontMass = (mass * frontMassBias);
+    Fix16 frontI = (frontMass * inertiaBase);
+    Fix16 negHeightXConstant = (-height * dword_677D78);
 
-    // Mass distribution
-    Fix16 frontMass = mass * frontMassBias;
-    Fix16 rearMass = mass * (dword_677F54 - frontMassBias);
+    Fix16 rearMass = (mass * (dword_677F54 - frontMassBias));
+    Fix16 rearI = (rearMass * inertiaBase);
 
-    // Moments
-    Fix16 frontI = frontMass * Ixx;
-    Fix16 rearI = rearMass * Ixx;
+    *outCgHeight = (((heightXConstant * frontMass) + (negHeightXConstant * rearMass)) / mass);
 
-    // CG height offset
-    Fix16 cgHeight = (height * rearMass + height * frontMass) / mass;
-
-    *outCgHeight = cgHeight;
-
-    // Compute deltas
-    Fix16 frontDelta = cgHeight - height;
-    Fix16 rearDelta = cgHeight - height;
-
-    // Combine inertia contributions
-    Fix16 inertia = frontI + (frontMass * frontDelta * frontDelta) + rearI + (rearMass * rearDelta * rearDelta);
-
-    return inertia;
+    return ((frontI + ((frontMass * (*outCgHeight - heightXConstant)) * (*outCgHeight - heightXConstant))) +
+            (rearI + ((rearMass * (*outCgHeight - negHeightXConstant)) * (*outCgHeight - negHeightXConstant))));
 }
 
 MATCH_FUNC(0x5618F0)
@@ -632,15 +621,16 @@ void CarInfo_2C::CalculateCarInfo_4542A0(s32 idx)
     this->field_8_rear_wheel_offset = new_rear_wheel_offset;
     Fix16 outY;
     this->field_0_moment_of_inertia = ComputeCarMassAndInertia_454410(dword_6F6850.list[pCarInfo->w],
-                                                        dword_6F6850.list[pCarInfo->h],
-                                                        pModelPhysics->field_4_mass,
-                                                        pModelPhysics->field_C_front_mass_bias,
-                                                        &outY);
+                                                                      dword_6F6850.list[pCarInfo->h],
+                                                                      pModelPhysics->field_4_mass,
+                                                                      pModelPhysics->field_C_front_mass_bias,
+                                                                      &outY);
     this->field_C_center_of_mass_offset.x = 0;
     this->field_C_center_of_mass_offset.y = outY; // out val of func above
     this->field_14_half_thrust = pModelPhysics->field_24_thrust / 2;
     this->field_18_fith_thrust = pModelPhysics->field_24_thrust / 5;
-    this->field_1C_max_thrust_with_turbo = ComputeThrustWithTurbo_5618F0(field_14_half_thrust, field_18_fith_thrust, pModelPhysics->field_1_turbo);
+    this->field_1C_max_thrust_with_turbo =
+        ComputeThrustWithTurbo_5618F0(field_14_half_thrust, field_18_fith_thrust, pModelPhysics->field_1_turbo);
     this->field_20_front_drive_bias = dword_677F54 - pModelPhysics->field_8_front_drive_bias;
     this->field_24_skid_threshhold_1 = (pModelPhysics->field_30_sked_threshold * (dword_677F54 - dword_677D74));
     this->field_28_skid_threshhold_2 = (pModelPhysics->field_30_sked_threshold * (dword_677F54 + dword_677D74));
