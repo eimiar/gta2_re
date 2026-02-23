@@ -511,7 +511,7 @@ enum
     Unknown_9 = 9,
     Unknown_10 = 10,
     Normal_Fall_11 = 11,
-    Letal_Fall_12 = 12,
+    Lethal_Fall_12 = 12,
     Unknown_13 = 13,
     Unknown_14 = 14,
 };

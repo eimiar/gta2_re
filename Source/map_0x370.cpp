@@ -48,6 +48,9 @@ DEFINE_GLOBAL_INIT(Fix16, dword_6F5F18, Fix16(0x2000, 0), 0x6F5F18);
 DEFINE_GLOBAL_INIT(Fix16, dword_6F60B8, Fix16(0x2800, 0), 0x6F60B8);
 DEFINE_GLOBAL_INIT(Fix16, dword_6F61D8, Fix16(0x3000, 0), 0x6F61D8);
 DEFINE_GLOBAL_INIT(Fix16, dword_6F6218, Fix16(0x3800, 0), 0x6F6218);
+DEFINE_GLOBAL_INIT(Fix16, dword_6F5B8C, Fix16(255), 0x6F5B8C);
+DEFINE_GLOBAL_INIT(Fix16, dword_6F6184, Fix16(10), 0x6F6184);
+
 Fix16 dword_6F6110 = Fix16(1); // = 0x4000; // todo
 
 static inline bool Overlaps(gmp_map_zone* pZone, u8 x, u8 y)
@@ -298,11 +301,77 @@ gmp_map_zone* Map_0x370::first_zone_by_type_4DF1D0(u8 zone_type)
     return NULL;
 }
 
-STUB_FUNC(0x4DF240)
-gmp_map_zone* Map_0x370::GetNearestZoneOfType_4DF240(u8 a2, u8 a3, char_type a4)
+// https://decomp.me/scratch/MqQPJ
+WIP_FUNC(0x4DF240)
+gmp_map_zone* Map_0x370::GetNearestZoneOfType_4DF240(u8 xpos, u8 ypos, u8 zone_type)
 {
-    NOT_IMPLEMENTED;
-    return 0;
+    WIP_IMPLEMENTED;
+    Fix16 v21 = dword_6F5B8C;
+    Fix16 v5 = dword_6F5B8C;
+
+    gmp_map_zone* pChosenZone = 0;
+    gmp_map_zone* pOtherZone = 0;
+
+    if (field_328_pZoneData == 0)
+    {
+        return 0;
+    }
+
+    s32 zone_idx;
+
+    // TODO: wrong field_32C_pZones type
+    for (zone_idx = 0; zone_idx < *(u16*)field_32C_pZones; ++zone_idx)
+    {
+        gmp_map_zone* pZone = Map_0x370::get_zone_4DFB30(zone_idx);
+
+        if (pZone->field_0_zone_type == zone_type //  zone type zone_type
+            && !pZone->sub_4DEF40())
+        {
+            Fix16 v13 = Fix16::sub_42A6B0(pZone->field_1_x, pZone->field_2_y, xpos, ypos);
+
+            if (v13 < v21)
+            {
+                if (v13 > dword_6F6184) // v13 < 10.0
+                {
+                    pChosenZone = pOtherZone;
+                    if (pOtherZone) //  line 101
+                    {
+                        v5 = v21;
+                    }
+                    else
+                    {
+                        v5 = v13;
+                        pChosenZone = pZone;
+                    }
+                    v21 = v13;
+                    pOtherZone = pZone;
+                }
+            }
+            else if (v13 < v5)
+            {
+                v5 = v13;
+                pChosenZone = pZone;
+            }
+        }
+    }
+    if (pChosenZone)
+    {
+        return pChosenZone;
+    }
+
+    if (!pOtherZone)
+    {
+        // TODO: wrong field_32C_pZones type
+        for (zone_idx = 0; zone_idx < *(u16*)field_32C_pZones; zone_idx++)
+        {
+            gmp_map_zone* v15 = Map_0x370::get_zone_4DFB30(zone_idx);
+            if (v15->field_0_zone_type == zone_type)
+            {
+                pOtherZone = v15;
+            }
+        }
+    }
+    return pOtherZone;
 }
 
 STUB_FUNC(0x4DF3E0)

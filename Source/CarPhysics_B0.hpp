@@ -124,15 +124,15 @@ class CarPhysics_B0
         }
     }
 
-    Fix16 ComputeTorqueUnknown_49E8E0()
+    Fix16 CarPhysics_B0::ComputeTorqueUnknown_49E8E0()
     {
         if (get_revs_561940())
         {
-            return (dword_6FE0E4->field_18_fith_thrust * this->field_60_gas_pedal) * 2;
+            return dword_6FE0E4->field_14_half_thrust + (dword_6FE0E4->field_18_fith_thrust * this->field_60_gas_pedal) * 2;
         }
         else
         {
-            return dword_6FE0E4->field_18_fith_thrust * this->field_60_gas_pedal;
+            return dword_6FE0E4->field_14_half_thrust + dword_6FE0E4->field_18_fith_thrust * this->field_60_gas_pedal;
         }
     }
 

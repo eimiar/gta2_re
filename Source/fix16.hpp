@@ -325,6 +325,15 @@ class Fix16
         }
     }
 
+    // https://decomp.me/scratch/MqQPJ
+    inline static Fix16 __stdcall sub_42A6B0(Fix16 x1, Fix16 y1, Fix16 x2, Fix16 y2) 
+    {
+        Fix16 diff_x = x2 - x1;
+        Fix16 diff_y = y2 - y1;
+
+        return Fix16::Max(Fix16::Abs(diff_x), Fix16::Abs(diff_y));
+    }
+
     EXPORT static class Ang16 __stdcall atan2_fixed_405320(Fix16& pMaybeX_FP16, Fix16& pMaybeY_FP16);
 
   public:
