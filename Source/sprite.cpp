@@ -254,11 +254,77 @@ void Sprite::sub_59E320(char_type a2)
     }
 }
 
-STUB_FUNC(0x59e390) // https://decomp.me/scratch/dijmx
-bool Sprite::ShrinkSprite_59E390(Fix16 a2, Fix16 a3, s32 a4)
+// https://decomp.me/scratch/dijmx
+WIP_FUNC(0x59e390)
+bool Sprite::ShrinkSprite_59E390(Fix16 xoff, Fix16 yoff, s32 bUnknown)
 {
-    NOT_IMPLEMENTED;
-    return 0;
+    WIP_IMPLEMENTED;
+
+    Update_4C_59F990();
+
+    Sprite_4C* p4C_ = this->field_4_0x4C_len;
+    Fix16 s_w = p4C_->field_0_width;
+    Fix16 s_h = p4C_->field_4_height;
+    Fix16 s_w_ = p4C_->field_0_width;
+    Fix16 wd = p4C_->field_0_width - xoff;
+    p4C_->field_0_width = wd;
+
+    if (wd <= gFix16_7035C0)
+    {
+        p4C_->field_0_width = gFix16_7035C0;
+    }
+
+    p4C_->field_48_bBoxUpToDate = 0;
+
+    bool bWEq = p4C_->field_0_width == gFix16_7035C0;
+    Sprite_4C* p4C__ = this->field_4_0x4C_len;
+    Fix16 hd = p4C__->field_4_height - yoff;
+    p4C__->field_4_height = hd;
+    if (hd <= gFix16_7035C0)
+    {
+        p4C__->field_4_height = gFix16_7035C0;
+    }
+    Fix16 s_h_ = p4C__->field_4_height;
+    p4C__->field_48_bBoxUpToDate = 0;
+
+    bool ret = s_h_ == gFix16_7035C0 || bWEq;
+
+    if (bUnknown == 1)
+    {
+        Sprite_4C* p4C = this->field_C_sprite_4c_ptr;
+        Sprite_4C* p4C___ = this->field_4_0x4C_len;
+        Fix16 s_h__ = p4C___->field_4_height;
+
+        Fix16 new_w;
+        Fix16 new_h;
+        if (s_w == gFix16_7035C0)
+        {
+            new_w = gFix16_7035C0;
+        }
+        else
+        {
+            new_w = ((p4C___->field_0_width * p4C->field_0_width) / s_w_);
+        }
+
+        if (s_h == gFix16_7035C0)
+        {
+            new_h = gFix16_7035C0;
+        }
+        else
+        {
+            new_h = ((s_h__ * p4C->field_4_height) / s_h);
+            ret = s_h_ == gFix16_7035C0 || bWEq;
+        }
+
+        if (new_w != p4C->field_0_width || new_h != p4C->field_4_height)
+        {
+            p4C->field_0_width = new_w;
+            p4C->field_4_height = new_h;
+            p4C->field_48_bBoxUpToDate = 0;
+        }
+
+    }
+    return ret;
 }
 
 STUB_FUNC(0x59e4c0)
@@ -887,8 +953,10 @@ char_type Sprite::HitTestVerticalLine_5A0EF0(Fix16 a2, Fix16 a3, Fix16 a4)
     WIP_IMPLEMENTED;
 
     Fix16_Point* pBBox = this->field_C_sprite_4c_ptr->field_C_renderingRect;
-    if (IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[0].x, &pBBox[1].y) || IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[1].x, &pBBox[2].y) ||
-        IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[2].x, &pBBox[3].y) || IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[3].x, &pBBox[0].y))
+    if (IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[0].x, &pBBox[1].y) ||
+        IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[1].x, &pBBox[2].y) ||
+        IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[2].x, &pBBox[3].y) ||
+        IntersectVerticalLineWithSegment_4F77D0(&a2, &a3, &a4, &pBBox[3].x, &pBBox[0].y))
     {
         gRozza_679188.field_C_mapy_t2 = a2;
         gRozza_679188.field_0_type = 2;
@@ -1053,7 +1121,7 @@ char_type Sprite::IsTouchingSlopeBlock_5A1EB0()
 
     UpdateCollisionBoundsIfNeeded_59E9C0();
     Fix16_Point* pBBox = this->field_C_sprite_4c_ptr->field_C_renderingRect;
-    
+
     gmp_block_info* pBlock1 = gMap_0x370_6F6268->get_block_4DFE10(pBBox[0].x.ToInt(), pBBox[0].y.ToInt(), zpos_int);
     if (pBlock1)
     {
@@ -1064,7 +1132,7 @@ char_type Sprite::IsTouchingSlopeBlock_5A1EB0()
         }
     }
 
-    gmp_block_info* pBlock2 = gMap_0x370_6F6268->get_block_4DFE10( pBBox[1].x.ToInt(), pBBox[1].y.ToInt(), zpos_int);
+    gmp_block_info* pBlock2 = gMap_0x370_6F6268->get_block_4DFE10(pBBox[1].x.ToInt(), pBBox[1].y.ToInt(), zpos_int);
     if (pBlock2)
     {
         u8 slope_mask2 = pBlock2->field_B_slope_type;
