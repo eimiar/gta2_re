@@ -214,10 +214,10 @@ void Weapon_30::pistol_5DD860()
             }
 
             field_2_reload_speed = 20;
-            
+
             gParticle_8_6FD5E8->GunMuzzelFlash_53E970(field_24_pPed->field_168_game_object->field_80_sprite_ptr);
             field_24_pPed->AddThreateningPedToList_46FC70();
-            
+
             if (field_24_pPed->field_15C_player)
             {
                 gShooey_CC_67A4B8->ReportCrimeForPed(2u, this->field_24_pPed);
@@ -226,11 +226,11 @@ void Weapon_30::pistol_5DD860()
         else
         {
             spawn_bullet_5DCF60(154,
-                                      field_24_pPed->get_cam_x(),
-                                      field_24_pPed->get_cam_y(),
-                                      field_24_pPed->get_cam_z(),
-                                      field_24_pPed->Get_F12E_4CCA90(),
-                                      field_24_pPed->sub_45B520());
+                                field_24_pPed->get_cam_x(),
+                                field_24_pPed->get_cam_y(),
+                                field_24_pPed->get_cam_z(),
+                                field_24_pPed->Get_F12E_4CCA90(),
+                                field_24_pPed->sub_45B520());
             field_2_reload_speed = 5;
         }
         TickReloadSpeed_5DCF40();
@@ -504,10 +504,92 @@ void Weapon_30::pull_trigger_5E3670()
     }
 }
 
-STUB_FUNC(0x5e3850)
+WIP_FUNC(0x5e3850)
 void Weapon_30::rocket_5E3850()
 {
-    NOT_IMPLEMENTED;
+    WIP_IMPLEMENTED;
+
+    if (this->field_2_reload_speed)
+    {
+        if (!this->field_20)
+        {
+            this->field_24_pPed->field_21C &= ~0x400000u;
+        }
+        --this->field_2_reload_speed;
+    }
+    else
+    {
+        set_field_2C_4CCA80(1);
+
+        if (this->field_4)
+        {
+            Ang16 F12E_4CCA90 = field_24_pPed->Get_F12E_4CCA90();
+            Fix16 cam_z_416B50 = field_24_pPed->get_cam_z();
+            Fix16 cam_y_403A10 = field_24_pPed->get_cam_y();
+            Fix16 cam_x_403A00 = field_24_pPed->get_cam_x();
+            Fix16_Point v26 = field_24_pPed->sub_45B520();
+            spawn_bullet_5DCF60(159, cam_x_403A00, cam_y_403A10, cam_z_416B50, F12E_4CCA90, v26);
+            this->field_2_reload_speed = 5;
+            this->field_20 = 0;
+        }
+        else
+        {
+            Object_2C* v9;
+            bool IsField238_4333A0 = field_24_pPed->IsField238_45EDE0(2);
+            if (IsField238_4333A0)
+            {
+                Ang16 v4 = field_24_pPed->Get_F12E_4CCA90();
+                Fix16 v5 = field_24_pPed->get_cam_z();
+                Fix16 cam_y_403A10 = field_24_pPed->get_cam_y();
+                Fix16 v6 = field_24_pPed->get_cam_x();
+                Fix16_Point v7 = field_24_pPed->sub_45B520();
+                v9 = spawn_bullet_5DCF60(128, v6, cam_y_403A10, v5, v4, v7);
+            }
+            else
+            {
+                if (!this->field_20)
+                {
+                    Ang16 v10 = field_24_pPed->Get_F12E_4CCA90();
+                    Fix16 v11 = field_24_pPed->get_cam_z();
+                    Fix16 cam_y_403A10 = field_24_pPed->get_cam_y();
+                    Fix16 v12 = field_24_pPed->get_cam_x();
+                    Fix16_Point v13 = field_24_pPed->sub_45B520();
+                    spawn_bullet_5DCF60(159, v12, cam_y_403A10, v11, v10, v13);
+                    this->field_2_reload_speed = 5;
+                    this->field_20 = 1;
+                    return;
+                }
+
+                Ang16 v14 = field_24_pPed->Get_F12E_4CCA90();
+                Fix16 v15 = field_24_pPed->get_cam_z();
+                Fix16 cam_y_403A10 = field_24_pPed->get_cam_y();
+                Fix16 v16 = field_24_pPed->get_cam_x();
+                Fix16_Point v17 = field_24_pPed->sub_45B520();
+                v9 = spawn_bullet_5DCF60(128, v16, cam_y_403A10, v15, v14, v17);
+            }
+
+            field_24_pPed->AddThreateningPedToList_46FC70();
+            if (v9)
+            {
+                if (field_24_pPed->IsField238_45EDE0(2))
+                {
+                    decrement_ammo_4CCA30();
+                }
+            }
+
+            field_2_reload_speed = 50;
+            gParticle_8_6FD5E8->GunMuzzelFlash_53E970(field_24_pPed->field_168_game_object->field_80_sprite_ptr);
+            field_20 = 0;
+            
+            if (field_24_pPed->is_player_41B0A0())
+            {
+                gShooey_CC_67A4B8->ReportCrimeForPed(2u, field_24_pPed);
+                //TickReloadSpeed_5DCF40();
+                //return;
+            }
+        }
+        TickReloadSpeed_5DCF40();
+    }
 }
 
 MATCH_FUNC(0x5e3bd0)
