@@ -211,10 +211,9 @@ void Weapon_30::flamethrower_5DD0F0()
 }
 
 STUB_FUNC(0x5dd290)
-u8 Weapon_30::shotgun_5DD290()
+void Weapon_30::shotgun_5DD290()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 // 9.6f 0x4CE070
@@ -278,17 +277,15 @@ void Weapon_30::pistol_5DD860()
 }
 
 STUB_FUNC(0x5dda70)
-u8 Weapon_30::dual_pistol_5DDA70()
+void Weapon_30::dual_pistol_5DDA70()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5ddd20)
-u8 Weapon_30::smg_5DDD20()
+void Weapon_30::smg_5DDD20()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5ddfc0)
@@ -327,10 +324,9 @@ void Weapon_30::shocker_5E06B0()
 }
 
 STUB_FUNC(0x5e0740)
-char_type Weapon_30::electro_batton_5E0740()
+void Weapon_30::electro_batton_5E0740()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 MATCH_FUNC(0x5e0ab0)
@@ -354,52 +350,45 @@ void Weapon_30::car_bomb_5E0AB0(char_type instant_bomb)
 }
 
 STUB_FUNC(0x5e0b10)
-char_type Weapon_30::fire_truck_flamethrower_5E0B10()
+void Weapon_30::fire_truck_flamethrower_5E0B10()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e0e70)
-s32* Weapon_30::fire_truck_gun_5E0E70()
+void Weapon_30::fire_truck_gun_5E0E70()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e10e0)
-u8 Weapon_30::tank_main_gun_5E10E0()
+void Weapon_30::tank_main_gun_5E10E0()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e13e0)
-u8 Weapon_30::army_gun_jeep_5E13E0()
+void Weapon_30::army_gun_jeep_5E13E0()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e1dc0)
-char_type Weapon_30::oil_stain_5E1DC0()
+void Weapon_30::oil_stain_5E1DC0()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e2550)
-char_type Weapon_30::car_mine_5E2550()
+void Weapon_30::car_mine_5E2550()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 STUB_FUNC(0x5e2940)
-u8 Weapon_30::car_smg_5E2940()
+void Weapon_30::car_smg_5E2940()
 {
     NOT_IMPLEMENTED;
-    return 0;
 }
 
 MATCH_FUNC(0x5e33c0)
