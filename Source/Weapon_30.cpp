@@ -10,8 +10,11 @@
 #include "enums.hpp"
 #include "root_sound.hpp"
 #include "sprite.hpp"
+#include "Object_5C.hpp"
 
-DEFINE_GLOBAL(Fix16, dword_706CF4, 0x706CF4);
+DEFINE_GLOBAL_INIT(Fix16, dword_706CF4, Fix16(0x1000, 0), 0x706CF4);
+DEFINE_GLOBAL_INIT(Fix16, k_dword_706EC0, Fix16(0x8000, 0), 0x706EC0);
+DEFINE_GLOBAL(u8, bAllowFlameSegment_706D60, 0x706D60);
 
 // TODO: move
 EXTERN_GLOBAL(Shooey_CC*, gShooey_CC_67A4B8);
@@ -161,11 +164,45 @@ void Weapon_30::TickReloadSpeed_5DCF40()
     }
 }
 
-STUB_FUNC(0x5dcf60)
-Object_2C* Weapon_30::spawn_bullet_5DCF60(s32 bullet_type, Fix16 x, Fix16 y, Fix16 z, Ang16 rot, const Fix16_Point& pPoint)
+// 9.6f 0x4CDA90
+WIP_FUNC(0x5dcf60)
+Object_2C* Weapon_30::spawn_bullet_5DCF60(s32 bullet_type, Fix16 xpos, Fix16 ypos, Fix16 zpos, Ang16 rot, const Fix16_Point& rPoint)
 {
-    NOT_IMPLEMENTED;
-    return 0;
+    WIP_IMPLEMENTED;
+
+    Sprite* p5CSprite = gObject_5C_6F8F84->field_58;
+    Object_2C* pNewBullet = gObject_5C_6F8F84->NewPhysicsObj_5299B0(bullet_type, xpos, ypos, zpos, rot);
+
+    p5CSprite->set_xyz_lazy_420600(field_24_pPed->get_cam_x() + (xpos - field_24_pPed->get_cam_x()) / k_dword_706EC0,
+                                   field_24_pPed->get_cam_y() + (ypos - field_24_pPed->get_cam_y()) / k_dword_706EC0,
+                                   zpos);
+
+    p5CSprite->set_ang_lazy_420690(pNewBullet->field_4->field_0);
+
+    p5CSprite->AllocInternal_59F950(pNewBullet->field_8->field_0, dword_706CF4, pNewBullet->field_8->field_8);
+    p5CSprite->field_30_sprite_type_enum = pNewBullet->field_4->field_30_sprite_type_enum;
+    p5CSprite->sub_59E960();
+    p5CSprite->field_8_pSprite = pNewBullet->field_4->field_8_pSprite;
+
+    pNewBullet->SetDamageOwner_529080(field_24_pPed->field_267_varrok_idx);
+
+    if (bullet_type == 254 || bullet_type == 265)
+    {
+        pNewBullet->sub_5290C0(field_24_pPed->sub_45BE30());
+    }
+
+    if (p5CSprite->CheckSpriteMovementRegion_5A2500())
+    {
+        pNewBullet->sub_5290A0();
+        bAllowFlameSegment_706D60 = 0;
+        return 0;
+    }
+    else
+    {
+        bAllowFlameSegment_706D60 = 1;
+        pNewBullet->SetMovementVector_5224E0(&rPoint);
+        return pNewBullet;
+    }
 }
 
 STUB_FUNC(0x5dd0f0)
