@@ -1,4 +1,5 @@
 #include "Weapon_30.hpp"
+#include "CarPhysics_B0.hpp"
 #include "Object_3C.hpp"
 #include "Object_5C.hpp"
 #include "Particle_8.hpp"
@@ -9,9 +10,9 @@
 #include "char.hpp"
 #include "debug.hpp"
 #include "enums.hpp"
+#include "map_0x370.hpp"
 #include "root_sound.hpp"
 #include "sprite.hpp"
-#include "map_0x370.hpp"
 
 DEFINE_GLOBAL_INIT(Fix16, dword_706CF4, Fix16(0x1000, 0), 0x706CF4);
 DEFINE_GLOBAL_INIT(Fix16, k_dword_706EC0, Fix16(0x8000, 0), 0x706EC0);
@@ -23,6 +24,8 @@ DEFINE_GLOBAL(Fix16, dword_706FEC, 0x706FEC);
 DEFINE_GLOBAL(Fix16, dword_706EB8, 0x706EB8);
 DEFINE_GLOBAL(Fix16, k_dword_706EDC, 0x706EDC);
 DEFINE_GLOBAL(Fix16, k_dword_706F70, 0x706F70);
+DEFINE_GLOBAL(Fix16, dword_706DCC, 0x706DCC);
+DEFINE_GLOBAL(Fix16, dword_706FD0, 0x706FD0);
 
 // TODO: move
 EXTERN_GLOBAL(Shooey_CC*, gShooey_CC_67A4B8);
@@ -399,13 +402,13 @@ void Weapon_30::car_mine_5E2550()
     Fix16_Point p;
     p.y = -(dword_706FF4 + ((dword_706FEC + Sprite_440840->field_C_sprite_4c_ptr->field_4_height)) / k_dword_706EC0);
     p.x = dword_706EB8;
-    
+
     p.RotateByAngle_40F6B0(Sprite_440840->field_0);
 
     Fix16_Point x_y_443580 = Sprite_440840->get_x_y_443580() + p;
 
     Fix16 v13 = Sprite_440840->field_C_sprite_4c_ptr->field_8;
-    Fix16 v14 = Sprite_440840->field_1C_zpos + v13 / 2;    
+    Fix16 v14 = Sprite_440840->field_1C_zpos + v13 / 2;
     if (v14 >= k_dword_706EDC)
     {
         v14 = k_dword_706EDC - k_dword_706F70;
@@ -422,10 +425,71 @@ void Weapon_30::car_mine_5E2550()
     }
 }
 
-STUB_FUNC(0x5e2940)
+// 9.6f 0x4D0230
+WIP_FUNC(0x5e2940)
 void Weapon_30::car_smg_5E2940()
 {
-    NOT_IMPLEMENTED;
+    WIP_IMPLEMENTED;
+
+    if (field_2_reload_speed == 0)
+    {
+        field_24_pPed = field_14_car->field_54_driver;
+
+        Sprite* pCarSprite = field_14_car->field_50_car_sprite;
+        Sprite_4C* sprite_4c_ptr = pCarSprite->field_C_sprite_4c_ptr;
+        Ang16 sprite_ang = pCarSprite->field_0;
+
+        Fix16_Point left;
+        left.x = dword_706DCC + sprite_4c_ptr->field_0_width / 2;
+        left.y = dword_706FD0 + sprite_4c_ptr->field_4_height / 2;
+
+        left.x = (left.x * gCos_table_669260[sprite_ang.rValue]) + (left.y * gSin_table_667A80[sprite_ang.rValue]);
+        left.y = ((-left.x * gSin_table_667A80[sprite_ang.rValue]) + (left.y * gCos_table_669260[sprite_ang.rValue]));
+        left += pCarSprite->get_x_y_443580();
+
+        Fix16_Point right;
+        right.y = left.y;
+        right.x = -left.x;
+        right.x = (right.x * gCos_table_669260[sprite_ang.rValue]) + (right.y * gSin_table_667A80[sprite_ang.rValue]);
+        right.y = ((-right.x * gSin_table_667A80[sprite_ang.rValue]) + (right.y * gCos_table_669260[sprite_ang.rValue]));
+        right += pCarSprite->get_x_y_443580();
+
+        Fix16_Point left_point = field_14_car->field_58_physics->GetPointVelocity_561350(&left);
+        Fix16_Point right_point = field_14_car->field_58_physics->GetPointVelocity_561350(&right);
+
+        if (!field_4)
+        {
+            Object_2C* v24 = spawn_bullet_5DCF60(254, left.x, left.y, pCarSprite->field_1C_zpos, sprite_ang, left_point);
+            Object_2C* v25 = spawn_bullet_5DCF60(254, right.x, right.y, pCarSprite->field_1C_zpos, sprite_ang, right_point);
+            if ((v24 || v25) && field_24_pPed->IsField238_45EDE0(2) && !is_infinite_ammo_4A4FA0())
+            {
+                field_0_ammo--;
+            }
+
+            gParticle_8_6FD5E8->GunMuzzelFlash_53E970(field_14_car->field_50_car_sprite);
+
+            field_2_reload_speed = 2;
+
+            field_24_pPed->AddThreateningPedToList_46FC70();
+            if (field_24_pPed->is_player_41B0A0())
+            {
+                gShooey_CC_67A4B8->ReportCrimeForPed(2u, field_24_pPed);
+            }
+        }
+        else
+        {
+            spawn_bullet_5DCF60(154, left.x, left.y, pCarSprite->field_1C_zpos, sprite_ang, left_point);
+            spawn_bullet_5DCF60(154, right.x, right.y, pCarSprite->field_1C_zpos, sprite_ang, right_point);
+            field_2_reload_speed = 1;
+        }
+
+        TickReloadSpeed_5DCF40();
+        set_field_2C_4CCA80(1);
+    }
+    else
+    {
+        field_2_reload_speed--;
+    }
 }
 
 MATCH_FUNC(0x5e33c0)
