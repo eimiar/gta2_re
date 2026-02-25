@@ -1518,7 +1518,7 @@ char_type Object_2C::HandleRotationStateTransition_528240(s32 current, s32 desir
 }
 
 STUB_FUNC(0x5283c0)
-void Object_2C::TickObject_5283C0(s32 a2)
+void Object_2C::TickObject_5283C0(s32 obj_type)
 {
     NOT_IMPLEMENTED;
 }
@@ -2455,9 +2455,11 @@ Object_2C* Object_5C::sub_529BC0(s32 object_type, Fix16 xpos, Fix16 ypos, Fix16 
 }
 
 // https://decomp.me/scratch/dZQWS
-STUB_FUNC(0x529c00)
+WIP_FUNC(0x529c00)
 Object_2C* Object_5C::New_529C00(int object_type, Fix16 xpos, Fix16 ypos, Fix16 zpos, Ang16 rotation, char bUnknown)
 {
+    WIP_IMPLEMENTED;
+
     Phi_74* pPhi; // edi
     Object_2C* pNew2C; // esi
     Wolfy_30* pNew30; // eax
