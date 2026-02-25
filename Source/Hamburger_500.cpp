@@ -83,7 +83,8 @@ Ped* Hamburger_500::sub_4748A0(s32 a2, Ped* pPed)
 {
     for (u8 i = 0; i < 20; i++)
     {
-        if (field_0[i].field_0 == 1 && field_0[i].field_30_ped_to_follow == pPed && sub_474850(pPed, field_0[i].field_4_ped_owner) && a2 == field_0[i].field_C)
+        if (field_0[i].field_0 == 1 && field_0[i].field_30_ped_to_follow == pPed && sub_474850(pPed, field_0[i].field_4_ped_owner) &&
+            a2 == field_0[i].field_C)
         {
             return field_0[i].field_4_ped_owner;
         }
@@ -167,40 +168,23 @@ char_type Hamburger_500::sub_474AF0(Ped* pPed)
     return 0;
 }
 
-STUB_FUNC(0x474b50)
+MATCH_FUNC(0x474b50)
 char_type Hamburger_500::sub_474B50(Ped* pPed)
 {
-    NOT_IMPLEMENTED;
     for (u8 i = 0; i < 20; i++)
     {
         if (field_0[i].field_0 == 1)
         {
             if (sub_474850(pPed, field_0[i].field_4_ped_owner))
             {
-                if (field_0[i].field_C == 7)
+                switch (field_0[i].field_C)
                 {
-                    return 1;
+                    case 7:
+                        return 1;
+                    case 9:
+                    case 11:
+                        return 1;
                 }
-
-                if (field_0[i].field_C == 2 || field_0[i].field_C == 0)
-                {
-                    return 1;
-                }
-
-                // TODO: Some sort switch case annoyance?
-                /*
-                f_c = field_0[i].field_C - 7;
-                if (!f_c)
-                {
-                    return 1;
-                }
-
-                f_c_m2 = f_c - 2;
-                if (!f_c_m2 || f_c_m2 == 2)
-                {
-                    return 1;
-                }
-                */
             }
         }
     }
