@@ -68,7 +68,6 @@ DEFINE_GLOBAL(Ang16, word_6F8D88, 0x6F8D88); // TODO: Init via func 0x526E70
 
 DEFINE_GLOBAL(Fix16, dword_6F8CF0, 0x6F8CF0);
 
-
 DEFINE_GLOBAL_INIT(u8, byte_6771DC, 0, 0x6771DC);
 
 // TODO: From CarPhysics_B0
@@ -882,11 +881,9 @@ void Object_2C::UpdatePhysicsAndMovement_525B80()
     NOT_IMPLEMENTED;
 }
 
-WIP_FUNC(0x525d90)
+MATCH_FUNC(0x525d90)
 void Object_2C::UpdatePhysicsMovementAndAnimation_525D90()
 {
-    WIP_IMPLEMENTED;
-
     Ang16 ang;
     Sprite* pPhi_ = this->field_4;
     Fix16 x_val = pPhi_->field_14_xy.x;
@@ -898,21 +895,16 @@ void Object_2C::UpdatePhysicsMovementAndAnimation_525D90()
     Fix16 mov_speed;
     field_10_obj_3c->GetMovementSpeedAndAngle_521FD0(&mov_speed, &ang);
 
-    if (field_8->field_58)
-    {
-        IntegrateMovementAndCollisions_523BF0(mov_speed, ang);
-    }
-    else
+    if (!field_8->field_58)
     {
         IntegrateHorizontalMovementAndCollisions_524630(mov_speed, ang);
     }
-
-    Fix16 fC = Fix16::Abs(field_10_obj_3c->field_C);
-    if (fC < dword_6F8CF0)
+    else
     {
-        fC = kFpZero_6F8E10;
+        IntegrateMovementAndCollisions_523BF0(mov_speed, ang);
     }
-    field_10_obj_3c->field_C = fC;
+
+    field_10_obj_3c->field_C = field_10_obj_3c->field_C.sub_482730();
 
     Phi_74* pPhi = this->field_8;
     if (pPhi->field_65 != -1 || pPhi->field_34_behavior_type == 9 || (field_4->field_14_xy.x != x_val) || field_4->field_14_xy.y != y_val ||
@@ -949,10 +941,9 @@ void Object_2C::UpdatePhysicsMovementAndAnimation_525D90()
                         field_8->field_34_behavior_type != 10 && field_8->field_34_behavior_type != 1 &&
                         field_8->field_34_behavior_type != 12)
                     {
-                        s32 varrok_idx = this->field_26_varrok_idx;
-                        if (varrok_idx)
+                        if (field_26_varrok_idx > 0)
                         {
-                            gVarrok_7F8_703398->sub_59B0D0(varrok_idx);
+                            gVarrok_7F8_703398->sub_59B0D0(field_26_varrok_idx);
                             this->field_26_varrok_idx = 0;
                         }
                     }
@@ -2112,7 +2103,6 @@ void Object_2C::IntegrateMovementAndCollisions_523BF0(Fix16 a2, Ang16 a)
 {
     NOT_IMPLEMENTED;
 }
- 
 
 WIP_FUNC(0x525100)
 void Object_2C::sub_525100()
