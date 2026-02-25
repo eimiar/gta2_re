@@ -116,7 +116,6 @@ void Kfc_30::sub_5CC1C0()
     bool bClearRouteAndTryClearOthers = 0;
     bool bClearPedAndGroup = 1;
     bool bClearCharB4F24 = 1;
-    Ped* pPedListIter;
 
     if (field_8_group)
     {
@@ -168,7 +167,7 @@ void Kfc_30::sub_5CC1C0()
         if (field_8_group)
         {
             u8 i = 0;
-            for (pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
+            for (Ped* pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
             {
                 if (pPedListIter->field_168_game_object)
                 {
@@ -210,11 +209,12 @@ void Kfc_30::sub_5CC1C0()
                 if (field_8_group)
                 {
                     u8 i = 0;
-                    for (pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
+                    for (Ped* pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
                     {
                         pPedListIter->set_occupation_403970(ped_ocupation_enum::dummy);
                         pPedListIter->ClearGroupAndGroupIdx_403A30();
                         pPedListIter->Deallocate_45EB60();
+                        // TODO: Instruction swap
                         i++;
                         pPedListIter = field_8_group->field_4_ped_list[i];
                     }
@@ -245,7 +245,7 @@ void Kfc_30::sub_5CC1C0()
     if (field_8_group)
     {
         u8 i = 0;
-        for (pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
+        for (Ped* pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
         {
             if (pPedListIter->Get_F20E_4039F0() < this->field_1A)
             {
@@ -267,10 +267,12 @@ void Kfc_30::sub_5CC1C0()
         if (field_8_group)
         {
             u8 i = 0;
-            for (pPedListIter = field_8_group->field_4_ped_list[0]; pPedListIter;)
+            Ped* pPedListIter = field_8_group->field_4_ped_list[0];
+            while(pPedListIter)
             {
                 pPedListIter->ClearGroupAndGroupIdx_403A30();
                 pPedListIter->Deallocate_45EB60();
+                // TODO: Instruction swap
                 i++;
                 pPedListIter = field_8_group->field_4_ped_list[i];
             }
