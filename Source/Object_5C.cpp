@@ -2155,40 +2155,34 @@ void Object_2C::IntegrateMovementAndCollisions_523BF0(Fix16 a2, Ang16 a)
     NOT_IMPLEMENTED;
 }
 
-WIP_FUNC(0x522FA0)
+MATCH_FUNC(0x522FA0)
 void Object_2C::Sprite_UpdateZFromSlopeAndTile_522FA0(Sprite* pSprite)
 {
-    WIP_IMPLEMENTED;
-
     Fix16 z_val = pSprite->field_1C_zpos;
     if (gMap_0x370_6F6268->sub_466CF0(pSprite->field_14_xy.x.ToInt(), pSprite->field_14_xy.y.ToInt(), (z_val.ToInt()) - 1))
     {
         z_val -= Fix16(0x4000, 0);
     }
 
-    u8 slope_direction = gMap_0x370_6F6268->UpdateZFromSlopeAtCoord_4E5BF0(pSprite->field_14_xy.x, pSprite->field_14_xy.y, z_val) == 0;
-    Fix16 new_z = z_val;
-    if (slope_direction > 0)
+    if (gMap_0x370_6F6268->UpdateZFromSlopeAtCoord_4E5BF0(pSprite->field_14_xy.x, pSprite->field_14_xy.y, z_val) == 0)
     {
-        Fix16 v8 = z_val.GetFracValue();
-        if (v8 != kFpZero_6F8E10)
+        Fix16 z_frac = z_val.GetFracValue();
+        if (z_frac != kFpZero_6F8E10)
         {
-            new_z = z_val.GetRoundValue();
             z_val = z_val.GetRoundValue();
-            if (v8 > dword_6F8D10)
+            if (z_frac > dword_6F8D10)
             {
-                new_z += Fix16(0x4000, 0);
-                z_val = new_z;
+                z_val += Fix16(0x4000, 0);
             }
 
-            if (new_z > k_dword_6F8BFC)
+            if (z_val > k_dword_6F8BFC)
             {
-                new_z = k_dword_6F8BFC;
+                z_val = k_dword_6F8BFC;
             }
         }
     }
 
-    pSprite->set_z_lazy_420660(new_z);
+    pSprite->set_z_lazy_420660(z_val);
 }
 
 WIP_FUNC(0x525100)
