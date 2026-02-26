@@ -710,7 +710,7 @@ s32 Ped::CopyStatsFromPed_45B5B0(s32 a2)
 }
 
 MATCH_FUNC(0x45bbf0)
-Car_BC* Ped::sub_45BBF0()
+Car_BC* Ped::GetCarBeingEnteredOrExited_45BBF0()
 {
     if (field_27C_ped_state_2 == ped_state_2::ped2_entering_a_car_6 || field_27C_ped_state_2 == ped_state_2::ped2_getting_out_a_car_7)
     {

@@ -199,7 +199,7 @@ MATCH_FUNC(0x4DEF40)
 s8 gmp_map_zone::sub_4DEF40()
 {
     Fix16_Rect zoneBounds(field_1_x, field_2_y, field_3_w, field_4_h);
-    return gGame_0x40_67E008->sub_4B9B10(&zoneBounds);
+    return gGame_0x40_67E008->IsRectVisibleToAnyPlayer_4B9B10(&zoneBounds);
 }
 
 MATCH_FUNC(0x4DEFD0)
@@ -663,7 +663,7 @@ Gang_144* Map_0x370::GetGangAtCoords_4DFB50(Fix16 x, Fix16 y)
 }
 
 MATCH_FUNC(0x4DFB90)
-void Map_0x370::sub_4DFB90()
+void Map_0x370::SpawnMapObjects_4DFB90()
 {
     gmp_map_object* pMapObjects = field_338_pMapObjects;
     for (u32 i = 0; i < this->field_344_map_object_count; i++, ++pMapObjects)

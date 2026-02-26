@@ -210,7 +210,7 @@ void force_link()
     lewin.ChangeLifeCountByAmount_5699F0(0);
     lewin.sub_569A10();
     lewin.SetScoreTextColour_569C20();
-    lewin.sub_569CB0();
+    lewin.InitializePlayerState_569CB0();
     lewin.sub_569E70();
     lewin.GetDeathText_569F00();
     lewin.DisableInputs_569F40();
@@ -234,7 +234,7 @@ void force_link()
     drawUnk.sub_435840();
     drawUnk.sub_435860(0);
     drawUnk.sub_435D20(1, 1, 1, 1, 1, 1);
-    drawUnk.sub_435DD0();
+    drawUnk.ResetCameraSmoothing_435DD0();
     drawUnk.sub_436110();
     drawUnk.sub_436120(1);
     drawUnk.sub_436830();

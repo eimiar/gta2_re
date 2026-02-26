@@ -38,7 +38,7 @@ class Ped
     EXPORT void sub_45B560(Player* a2, char_type a3);
     EXPORT bool sub_45B590();
     EXPORT s32 CopyStatsFromPed_45B5B0(s32 a2);
-    EXPORT Car_BC* sub_45BBF0();
+    EXPORT Car_BC* GetCarBeingEnteredOrExited_45BBF0();
     EXPORT void TeleportToCoord_45BC10(Fix16 xpos, Fix16 ypos);
     EXPORT void ManageShocking_45BC70();
     EXPORT bool sub_45BD20(Car_BC* pCar);

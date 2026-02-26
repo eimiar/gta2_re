@@ -6601,7 +6601,7 @@ char_type Car_14::SpawnTrafficCar_582480(s32 a2, s32 arrow_direction, s32 a4)
                     ypos = dword_6FF674 + (v75.GetRoundValue());
                     car_x = dword_6FF674 + (v74.GetRoundValue());
                     car_y = ypos;
-                    if (!gGame_0x40_67E008->sub_4B9B10(this->field_4_rect))
+                    if (!gGame_0x40_67E008->IsRectVisibleToAnyPlayer_4B9B10(this->field_4_rect))
                     {
                         if (!v108)
                         {
