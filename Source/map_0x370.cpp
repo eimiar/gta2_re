@@ -327,7 +327,7 @@ gmp_map_zone* Map_0x370::GetNearestZoneOfType_4DF240(u8 xpos, u8 ypos, u8 zone_t
         if (pZone->field_0_zone_type == zone_type //  zone type zone_type
             && !pZone->sub_4DEF40())
         {
-            Fix16 v13 = Fix16::sub_42A6B0(pZone->field_1_x, pZone->field_2_y, xpos, ypos);
+            Fix16 v13 = Fix16::MaxAbsDistance_42A6B0(pZone->field_1_x, pZone->field_2_y, xpos, ypos);
 
             if (v13 < v21)
             {
